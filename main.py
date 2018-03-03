@@ -1,5 +1,7 @@
 import random
 import play_sound
+import os
+from colorama import Fore, Back, Style , init
 
 def create_cube():
     number_on = False
@@ -25,22 +27,49 @@ def create_cube():
         cube += [side]
     return cube
 
+def string_to_colour(string):
+    new_string = ""
+
+    for loop in range(len(string)):
+        if string[loop] == "0":
+            new_string += Back.RED
+        elif string[loop] == "1":
+            new_string += Back.WHITE
+            new_string += Fore.BLACK
+        elif string[loop] == "2":
+            new_string += Back.MAGENTA
+        elif string[loop] == "3":
+            new_string += Back.YELLOW
+            new_string += Fore.BLACK
+        elif string[loop] == "4":
+            new_string += Back.BLUE
+        elif string[loop] == "4":
+            new_string += Back.GREEN
+
+
+
+        new_string += string[loop]
+        new_string += Style.RESET_ALL
+        
+
+    return new_string
+
 def print_cube(cube):
     lenght = len(str(cube[0][0]))
     print("")
-    print(" "*lenght + str(cube[5][0]))
-    print(" "*lenght + str(cube[5][1]))
-    print(" "*lenght + str(cube[5][2]))
-
-    print(str(cube[0][0])+str(cube[1][0])+str(cube[2][0])+str(cube[3][0]))
-    print(str(cube[0][1])+str(cube[1][1])+str(cube[2][1])+str(cube[3][1]))
-    print(str(cube[0][2])+str(cube[1][2])+str(cube[2][2])+str(cube[3][2]))
-
-    print(" "*lenght + str(cube[4][0]))
-    print(" "*lenght + str(cube[4][1]))
-    print(" "*lenght + str(cube[4][2]))
+    print(string_to_colour(" "*lenght + str(cube[5][0])))
+    print(string_to_colour(" "*lenght + str(cube[5][1])))
+    print(string_to_colour(" "*lenght + str(cube[5][2])))
+          
+    print(string_to_colour(str(cube[0][0])+str(cube[1][0])+str(cube[2][0])+str(cube[3][0])))
+    print(string_to_colour(str(cube[0][1])+str(cube[1][1])+str(cube[2][1])+str(cube[3][1])))
+    print(string_to_colour(str(cube[0][2])+str(cube[1][2])+str(cube[2][2])+str(cube[3][2])))
+          
+    print(string_to_colour(" "*lenght + str(cube[4][0])))
+    print(string_to_colour(" "*lenght + str(cube[4][1])))
+    print(string_to_colour(" "*lenght + str(cube[4][2])))
     print("")
-
+    print(Style.RESET_ALL)
     return
 
 def turn_face(cube,times=1):
@@ -107,11 +136,12 @@ def turn_cube_horizontal(cube):
     new_cube[1] = cube[0]
     new_cube[2] = cube[1]
     new_cube[3] = cube[2]
-    
-    cube[4] = turn_plane_no_side(cube[4])
-    cube[4] = turn_plane_no_side(cube[4])
+
     new_cube[4] = turn_plane_no_side(cube[4])
 
+
+    cube[5] = turn_plane_no_side(cube[5])
+    cube[5] = turn_plane_no_side(cube[5])
     new_cube[5] = turn_plane_no_side(cube[5])
     return new_cube
 
@@ -193,13 +223,13 @@ def random_play(cube,turns):
         face = random.randint(0,5)
         times = random.randint(1,3)
         cube = turn_cal(cube,face=face,times=times)
-
+        print(str(face) + " " + str(times))
     return cube
 
 
 
 
-
+init()
 cube = create_cube()
 play_sound.sound_setup("sounds\\your amazing.ogg")
 print_cube(cube)
@@ -207,6 +237,7 @@ print_cube(cube)
 while True:
     
     turns = int(input("turns to random: "))
+    os.system("cls")
     if turns > 0:
         cube = random_play(cube,turns)
         print_cube(cube)
